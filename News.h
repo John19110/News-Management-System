@@ -4,30 +4,39 @@
 #include<iomanip>
 #include<sstream>
 #include<map>
+#include<list>
+#include<vector>
 using namespace std;
 class News
 
 {
 public:
 	string Title,Description,Category;
-    int AvgRate;
-	map<int,int> Rates;
- 	tm ArticleDateAndTime; // it is a builtin struct not a normal varible 
+    float AvgRate;
+    int ID;
+	map<int,int> Ratings;
+    int spamCount;
+    list<string> Comments;
+    vector<int> BookmarkIDs;
+ 	tm ArticleDateAndTime; // tm is a built-in struct, not a normal variable 
 
 	// Initialize the date and time components
-   // { 59, 59, 14, 14, 4, 121}= 2021-05-14 14:59:59
+   // { 59, 59, 14, 14, 4, 124}= 2024-05-14 14:59:59
 
 		public:
 
             //Constractor
-			News(string Title ,string Description,string Category,int AvgRate,tm DateAndTime);
+			News(int ID, string Title ,string Description,string Category,float AvgRate,tm DateAndTime);
 
             //Getters
             string getTitle() const;
             string getDescription() const;
             string getCategory() const;
-            int getAvgRate() ;
+            float getAvgRate() ;
             string getArticleDateAndTime() const;
+            int getID();
+            int getSpamCount();
+            vector<int> getBookmarkIDs();
 
             // Setters
             void setTitle(const string& Title);
@@ -35,6 +44,14 @@ public:
             void setCategory(const string& Category);
             void setAvgRate(int AvgRate);
             void setArticleDateAndTime(const tm& DateAndTime);
-            void displayThisArticle();
+
+            //others
+            void displayArticle();
+            void displayComments();
+            void addUserRating(int,int);
+            void addComment(string);
+            float calculateAverageRating();
+            void addBookmarkID(int);
+            
 }; 
 
