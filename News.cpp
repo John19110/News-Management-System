@@ -1,6 +1,6 @@
 #include "News.h"
-
-News::News(int ID, string Title, string Description, string Category, float AvgRate, tm DateAndTime)
+//2
+News::News(int ID, string Title, string Description, string Category, float AvgRate, string DateAndTime)
 
 	{
     this->ID = ID;
@@ -8,8 +8,12 @@ News::News(int ID, string Title, string Description, string Category, float AvgR
 	this ->Description = Description;
 	this->Category = Category;
 	this ->AvgRate = AvgRate;
-	ArticleDateAndTime = DateAndTime;
+	this->ArticleDateAndTime = DateAndTime;
 	}
+
+News::News() {
+
+}
 
 void News::  displayArticle()
  {
@@ -22,6 +26,7 @@ void News::  displayArticle()
     cout << " Date and Time: " << getArticleDateAndTime() << "\n";
     cout << " Spam Reports: " << getSpamCount() << "\n";
     cout << "=================================================================================\n";
+    displayComments();
  }
 void News::displayComments() {
     if (Comments.size() == 0) {
@@ -89,10 +94,7 @@ int News::getSpamCount() {
 }
 
 string News::getArticleDateAndTime() const {
-    ostringstream oss;
-    oss << put_time(&ArticleDateAndTime, "%Y-%m-%d %H:%M:%S");
-    string articleDateStr = oss.str();
-    return articleDateStr;
+    return ArticleDateAndTime;
 }
 
 vector<int> News::getBookmarkIDs() {
@@ -112,10 +114,15 @@ void News::setCategory(const std::string& Category) {
     this->Category = Category;
 }
 
-void News::setAvgRate(int AvgRate) {
+void News::setAvgRate(float AvgRate) {
     this->AvgRate = AvgRate;
 }
 
-void News::setArticleDateAndTime(const tm& DateAndTime) {
+void News::setArticleDateAndTime(string DateAndTime) {
     ArticleDateAndTime = DateAndTime;
+}
+
+void News::reportSpam(int userId) {
+    spamCount++;
+    BookmarkIDs.push_back(userId);
 }
