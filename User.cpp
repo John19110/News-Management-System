@@ -1,5 +1,5 @@
 #include "User.h"
-//2
+//4
 User::User() {};
 User::User(int id, string username, string password, vector<string> prefferedCategories)
 {
@@ -10,10 +10,10 @@ User::User(int id, string username, string password, vector<string> prefferedCat
 }
 bool User::Login(string givenusername, string givenpassword)
 {
-	bool decision=false;
+	bool decision = false;
 
-	if (givenusername==username && givenpassword==password) {
-		decision= true;
+	if (givenusername == username && givenpassword == password) {
+		decision = true;
 		cout << "Login Successfull!\n";
 	}
 	return decision;
@@ -75,8 +75,8 @@ int User::getID() {
 	return this->id;
 }
 
-	
-	
+
+
 
 
 

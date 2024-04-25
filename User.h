@@ -2,7 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-//2
+//4
 using namespace std;
 class User
 {
@@ -15,12 +15,15 @@ public:
 	vector<string> preferredCategories;
 
 	User();
-	User(int,string,string,vector<string>);
-	bool Login(string,string);
+	User(int, string, string, vector<string>);
+	bool Login(string, string);
 	string getUserName();
 	string getPassword();
 	bool CheckLogin(string username, string pass);
 	bool CheckAdmin(string name);
 	int getID();
+
 };
+
+
 
