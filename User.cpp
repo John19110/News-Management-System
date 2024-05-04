@@ -1,3 +1,4 @@
+#pragma once
 #include "User.h"
 //4
 User::User() {};
@@ -73,6 +74,19 @@ bool User::CheckAdmin(string name)
 }
 int User::getID() {
 	return this->id;
+}
+string User:: toString() const {
+	std::string result;
+	result += "ID: " + to_string(id) + "\n";
+	result += "Username: " + username + "\n";
+	result += "Password: " + password + "\n";
+	result += "Attempt Count: " + std::to_string(attemptCount) + "\n";
+	result += "Max Attempts: " + std::to_string(maxAttempts) + "\n";
+	result += "Preferred Categories:\n";
+	for (const auto& category : preferredCategories) {
+		result += "  " + category + "\n";
+	}
+	return result;
 }
 
 

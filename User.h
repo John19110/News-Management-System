@@ -1,7 +1,9 @@
+#pragma once
 #include <string.h>
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include<string>
 //4
 using namespace std;
 class User
@@ -22,6 +24,7 @@ public:
 	bool CheckLogin(string username, string pass);
 	bool CheckAdmin(string name);
 	int getID();
+	string toString() const;
 
 };
 

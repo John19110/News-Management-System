@@ -1,3 +1,4 @@
+#pragma once
 #include <string.h>
 #include <fstream>
 #include <vector>

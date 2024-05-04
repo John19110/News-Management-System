@@ -1,3 +1,4 @@
+#pragma once
 #include "News.h"
 //4
 News::News(int ID, string Title, string Description, string Category, float AvgRate, string DateAndTime)
@@ -152,3 +153,32 @@ void News::reportSpam(int userId) {
 void News::setID(int ID) {
     this->ID = ID;
 }
+// Function to get all data as string
+string News:: toString() const {
+    std::string result;
+    result += "Title: " + Title + "\n";
+    result += "Description: " + Description + "\n";
+    result += "Category: " + Category + "\n";
+    result += "Average Rating: " + std::to_string(AvgRate) + "\n";
+    result += "ID: " + to_string(ID) + "\n";
+    result += "Ratings:\n";
+    for (const auto& rating : Ratings) {
+        result += "  User ID: " + std::to_string(rating.first) + ", Rating: " + std::to_string(rating.second) + "\n";
+    }
+    result += "Spam Count: " + std::to_string(spamCount) + "\n";
+    result += "Comments:\n";
+    for (const auto& comment : Comments) {
+        result += "  " + comment + "\n";
+    }
+    result += "Bookmark IDs:\n";
+    for (const auto& id : BookmarkIDs) {
+        result += "  " + std::to_string(id) + "\n";
+    }
+    result += "Spam IDs:\n";
+    for (const auto& id : spamIDs) {
+        result += "  " + std::to_string(id) + "\n";
+    }
+    result += "Article Date and Time: " + ArticleDateAndTime + "\n";
+    return result;
+
+};

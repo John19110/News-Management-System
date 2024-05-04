@@ -1,3 +1,4 @@
+#pragma once
 #include "Admin.h"
 #include "News.h"
 #include <cstring>

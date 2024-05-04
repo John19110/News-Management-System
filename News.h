@@ -1,3 +1,4 @@
+#pragma once
 #include<iostream>
 #include<ctime>
 #include<string>
@@ -18,7 +19,8 @@ public:
     list<string> Comments;
     vector<int> BookmarkIDs;
     vector<int> spamIDs;
-    string ArticleDateAndTime; // tm is a built-in struct, not a normal variable 
+    string ArticleDateAndTime; 
+    // tm is a built-in struct, not a normal variable 
 
     // Initialize the date and time components
    // { 59, 59, 14, 14, 4, 124}= 2024-05-14 14:59:59
@@ -37,6 +39,7 @@ public:
     int getID();
     int getSpamCount();
     vector<int> getBookmarkIDs();
+    string toString() const;
 
     // Setters
     void setTitle(const string& Title);

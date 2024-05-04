@@ -1,3 +1,4 @@
+#pragma once
 #include "News.h"
 #include "User.h"
 #include "Admin.h"
@@ -6,9 +7,10 @@
 #include<algorithm>
 using namespace std;
 //4
+    vector<News> news;
+    vector<User> users;
 vector<User> readUsers()
 {
-    vector<User> users;
     ifstream file("users.txt");
     if (!file.is_open()) {
         cerr << "Unable to open file: " << "users.txt" << endl;
@@ -44,11 +46,10 @@ vector<User> readUsers()
 }
 
 vector<News> readNews() {
-    vector<News> newsList;
     ifstream file("news.txt");
     if (!file.is_open()) {
         cerr << "Unable to open file: news.txt" << endl;
-        return newsList;
+        return news;
     }
 
     string line;
@@ -72,46 +73,77 @@ vector<News> readNews() {
         }
 
         // Create News object and add it to the list
-        News news(ID, Title, Description, Category, AvgRate, DateAndTime);
-        newsList.push_back(news);
+        News News(ID, Title, Description, Category, AvgRate, DateAndTime);
+        news.push_back(News);
     }
 
     file.close();
-    return newsList;
+    return news;
 }
+void WriteArticls() 
+{
+        ofstream outFile("ArticlesOUTPUT.txt"); // Open file for writing
 
-std::vector<Admin> readAdmins() {
-    vector<Admin> admins;
-    ifstream file("admins.txt"); // Open the file for reading
+        if (outFile.is_open()) {
+          
 
-    // Check if the file is opened successfully
-    if (!file.is_open()) {
-        // Handle error if the file cannot be opened
-        std::cerr << "Error: Unable to open file admins.txt\n";
-        return admins; // Return an empty vector
+            // Writing to the file using stream insertion operators
+            outFile << "Articles: ";
+            for (News Article : news)
+            {
+                outFile << "Articls : " << Article.toString();
+                outFile << "===============================================" << endl;
+                outFile << "===============================================" << endl;
+                outFile<< "===============================================" << endl;
+            }
+
+
+            
+            outFile.close(); // Close the file
+            cout << "Data has been written to the file." << endl;
+        }
+        else {
+            cerr << "Unable to open file!" << endl;
+        }
+
+        
+    }
+void WriteUsers() 
+{
+
+    ofstream outFile("UsersOUTPUT.txt"); // Open file for writing
+
+    if (outFile.is_open()) {
+
+
+        // Writing to the file using stream insertion operators
+        outFile << "Usere: ";
+        for (User User : users)
+        {
+            outFile << "Integer: " << User.toString();
+            outFile << "===============================================" << endl;
+            outFile << "===============================================" << endl;
+            outFile << "===============================================" << endl;
+        }
+
+
+
+        outFile.close(); // Close the file
+        cout << "Data has been written to the file." << endl;
+    }
+    else {
+        cerr << "Unable to open file!" << endl;
     }
 
-    string username;
-    string password;
-
-    // Read data from the file and create Admin objects
-    while (file >> username >> password) {
-        admins.emplace_back(username, password); // Create an Admin object and add it to the vector
-    }
-
-    // Close the file
-    file.close();
-
-    return admins; // Return the vector of Admin objects
 }
+
 
 string toLower(const string& str);
 int main() {
     cout << "\t\t\t\tWELCOME TO FCIS NEWS!\n";
     cout << "*********************************************************************************************************************\n";
-    vector<User> users = readUsers();
-    vector<News> news = readNews();
-    vector<Admin> admins = readAdmins();
+     users = readUsers();
+     news = readNews();
     vector<News> newsOfCategory, bookmarkedArticles, foundArticles;
     Admin loggedInAdmin;
     stack<News> latestNews;
@@ -446,13 +478,10 @@ int main() {
             cout << "Enter Password\t";
             cin >> pass;
 
-            for (int i = 0; i < admins.size(); i++) {
-                loginSuccess = admins[i].Login(user, pass);
-                if (loginSuccess) {
-                    cout << "Login Successful!\n";
-                    loggedInAdmin = admins[i];
-                    break;
-                }
+            if(user=="admin"&&pass=="admin")
+            {
+                loginSuccess = 1;
+                
             }
 
             if (loginSuccess) {
@@ -582,7 +611,8 @@ int main() {
             }
             break;
         }
-        case 3: {
+        case 3: 
+        {
             //Register user
             cout << "Enter Username:\t";
             cin >> newUsername;
@@ -595,12 +625,15 @@ int main() {
             cout << "User Registered Successfully!\n";
             break;
         }
-        default: {
+        default: 
+        {
             cout << "\tThank You for Using FCIS News, See You Later!\n\n\n\n\n\n";
             break;
         }
         }
     }
+    WriteArticls();
+    WriteUsers();
     return 0;
 }
 string toLower(const string& str) {
