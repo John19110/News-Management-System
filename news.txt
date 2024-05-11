@@ -9,11 +9,11 @@
 9,Parisian Art Scene Flourishes, Ahead of 2024 Olympics,culture,4.8,2024-05-03 16:00:00
 10,France Launches Volunteer Program, to Enhance Olympic Experience,community,1.4,2024-05-03 18:30:00
 11,Inside Look, Eco-Friendly Accommodations for Olympic Attendees,sustainability,4.7,2024-05-04 10:10:00
-12,The Science Behind the Sports, Innovations Driving Performance at the Olympics,science,4.9,2024-05-04 09:45:00
+12,The Science Behind the Sports, Innovations Driving Performance at the Olympics,science,1.7,2024-05-04 09:45:00
 13,Exploring the Ancient Ruins of Rome, A Guide to History and Adventure,travel,4.6,2024-05-06 14:20:00
 14,Top 10 Destinations for Solo Travelers, Trips for people Seeking Adventure,travel,4.7,2024-05-07 11:00:00
-15,Unveiling the Mysteries of the Amazon Rainforest, A Wildlife Expedition,Environment,4.8,2024-05-08 13:45:00
-16,The Rise of Virtual Reality, How VR is Revolutionizing Education,Technology,4.9,2024-05-08 15:30:00
+15,Unveiling the Mysteries of the Amazon Rainforest, A Wildlife Expedition,environment,4.8,2024-05-08 13:45:00
+16,The Rise of Virtual Reality, How VR is Revolutionizing Education,technology,4.9,2024-05-08 15:30:00
 17,Exploring the Wonders of Greek Mythology, A Journey Through Ancient Legends,culture,4.5,2024-05-08 10:55:00
 18,The Future of Space Travel, Private Companies Leading the Way,science,4.7,2024-05-09 08:20:00
 19,Discovering the World's Most Beautiful Beaches, A Traveler's Paradise,travel,4.8,2024-05-09 16:10:00
