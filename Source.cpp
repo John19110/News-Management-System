@@ -1,4 +1,3 @@
-#pragma once
 #include "News.h"
 #include "User.h"
 #include "Admin.h"
@@ -481,6 +480,7 @@ int main() {
             if(user=="admin"&&pass=="admin")
             {
                 loginSuccess = 1;
+                cout << "\t Admin Login Successfull!\n";
                 
             }
 
@@ -496,27 +496,46 @@ int main() {
 
                     switch (adminChoice) {
                     case 1: {
-                        cout << "Enter Title:\t";
-                        cin >> Title;
+                        cin.ignore(); // Ignore any remaining newline characters from previous inputs
+
+                        cout << "Enter Title: ";
+                        getline(cin, Title);
                         newArticle.setTitle(Title);
-                        cout << "Enter Description:\t";
-                        cin >> Description;
+
+                        cout << "Enter Description: ";
+                        getline(cin, Description);
                         newArticle.setDescription(Description);
-                        cout << "Enter Category:\t";
-                        cin >> Category;
+
+                        cout << "Enter Category: ";
+                        getline(cin, Category);
                         newArticle.setCategory(Category);
-                        cout << "Enter Date And Time:\t";
-                        cin >> DateAndTime;
+
+                        cout << "Enter Date And Time: ";
+                        getline(cin, DateAndTime);
                         newArticle.setArticleDateAndTime(DateAndTime);
-                        cout << "Enter Default Rating:\t";
-                        cin >> AvgRate;
+
+                        // Input validation for AvgRate
+                        while (true) {
+                            cout << "Enter Default Rating (1 to 5): ";
+                            if (cin >> AvgRate && AvgRate >= 1 && AvgRate <= 5) {
+                                break; // Exit loop if input is valid
+                            }
+                            else {
+                                cout << "Invalid input. Please enter a rating between 1 and 5.\n";
+                                cin.clear(); // Clear error flag
+                                cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Discard invalid input
+                            }
+                        }
                         newArticle.setAvgRate(AvgRate);
+
                         ID = news.size() + 1;
                         newArticle.setID(ID);
+
                         news.push_back(newArticle);
                         cout << "Article Added Successfully!\n";
                         break;
                     }
+
                     case 2: {
                         found = false;
                         cout << "Enter Article ID to be Removed:\t";
@@ -536,8 +555,10 @@ int main() {
                     }
                     case 3: {
                         found = false;
-                        cout << "Enter ID of Article\t";
+                        cout << "Enter ID of Article: ";
                         cin >> id;
+                        cin.ignore(); // Clear input buffer
+
                         for (int i = 0; i < news.size(); i++) {
                             if (news[i].getID() == id) {
                                 found = true;
@@ -545,46 +566,52 @@ int main() {
                                 break;
                             }
                         }
+
                         if (found) {
                             cout << "Press:\n";
                             cout << "\t1 to Update Title\n";
                             cout << "\t2 to Update Description\n";
                             cout << "\t3 to Update Category\n";
                             cin >> updateChoice;
+                            cin.ignore(); // Clear input buffer
+
                             switch (updateChoice) {
                             case 1: {
-                                cout << "Enter New Title:\t";
-                                cin >> title;
-                                news[index].setTitle(title);
-                                cout << "\tArticle Updated Successfully";
+                                cout << "Enter New Title: ";
+                                getline(cin, Title);
+                                news[index].setTitle(Title);
+                                cout << "Article Title Updated Successfully\n";
                                 break;
                             }
                             case 2: {
-                                cout << "Enter New Description:\t";
-                                cin >> description;
-                                news[index].setDescription(description);
-                                cout << "\tArticle Updated Successfully";
+                                cout << "Enter New Description: ";
+                                getline(cin, Description);
+                                news[index].setDescription(Description);
+                                cout << "Article Description Updated Successfully\n";
                                 break;
                             }
                             case 3: {
-                                cout << "Enter New Category:\t";
-                                cin >> category;
-                                news[index].setCategory(category);
-                                cout << "\tArticle Updated Successfully\n";
+                                cout << "Enter New Category: ";
+                                getline(cin, Category);
+                                news[index].setCategory(Category);
+                                cout << "Article Category Updated Successfully\n";
                                 break;
                             }
                             default:
-                                cout << "invalid choice\n";
+                                cout << "Invalid choice\n";
+                                break;
                             }
                         }
                         else {
-                            cout << "No Article Mathches that ID\n";
+                            cout << "No Article Matches that ID\n";
                         }
                         break;
                     }
+
                     case 4: {
                         cout << "Enter Category\t";
                         cin >> category;
+                        newsCategory.clear();
                         for (int i = 0; i < news.size(); i++) {
                             if (news[i].getCategory() == category) {
                                 newsCategory.push_back(news[i]);
@@ -592,10 +619,13 @@ int main() {
                         }
                         if (!newsCategory.empty()) {
                             float sum = 0, average = 0;
-                            for (int i = 0; i < news.size(); i++) {
+                            int count = 0;
+                            for (int i = 0; i < newsCategory.size(); i++) {
                                 sum += newsCategory[i].getAvgRate();
+                                count++;
                             }
-                            average = sum / newsCategory.size();
+                            average = sum / count;
+                            cout << "\t The Average of the '" << category << "' category is: " << average << endl;
                         }
                         else {
                             cout << "No Articles match the Category: '" << category << "'\n";
@@ -603,6 +633,7 @@ int main() {
                         }
                         break;
                     }
+                          
                     }
                 }
             }
