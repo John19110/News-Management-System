@@ -13,10 +13,9 @@ class News {
 public:
     string Title, Description, Category;
     float AvgRate;
-    int ID;
-    map<int, int> Ratings;
-    int spamCount;
-    list<string> Comments;
+    int ID,spamCount;
+    map<string, float> ratings;
+    vector<pair<string, string>> comments;
     vector<int> BookmarkIDs;
     vector<int> spamIDs;
     string ArticleDateAndTime; 
@@ -28,7 +27,7 @@ public:
 public:
 
     //Constractor
-    News(int ID, string Title, string Description, string Category, float AvgRate, string DateAndTime);
+    News(int ID, string Title, string Description, string Category,map<string,float>ratings, float AvgRate, vector<pair<string, string>> comments ,int spamcount,string DateAndTime);
     News();
     //Getters
     string getTitle() const;
@@ -52,8 +51,8 @@ public:
     //others
     void displayArticle();
     void displayComments();
-    void addUserRating(int, int);
-    void addComment(string);
+    void addUserRating(string,float);
+    void addComment(string,string);
     float calculateAverageRating();
     void addBookmarkID(int);
     void reportSpam(int);
