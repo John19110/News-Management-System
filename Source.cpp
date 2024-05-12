@@ -4,110 +4,153 @@
 #include <iostream>
 #include <stack>
 #include<algorithm>
+#include<string>
+#include<fstream>
 using namespace std;
-//4
-    vector<News> news;
-    vector<User> users;
+
+vector<News> news;
+vector<User> users;
+
 vector<User> readUsers()
 {
-    ifstream file("users.txt");
-    if (!file.is_open()) {
-        cerr << "Unable to open file: " << "users.txt" << endl;
-        return users; // Return empty vector if file cannot be opened
-    }
-    string line;
-    while (getline(file, line)) {
-        stringstream ss(line);
-        int id;
-        string username, userpassword, categories;
-
-        // Extracting data from each line
-        if (ss >> id >> username >> userpassword) {
-            // Extract the remaining part of the line as categories
-            size_t pos = line.find(userpassword) + userpassword.length() + 1;
-            categories = line.substr(pos, line.length() - pos);
-
-            istringstream categoriesStream(categories);
-            string category;
-            vector<string> preferredCategories;
-            while (getline(categoriesStream, category, ',')) {
-                preferredCategories.push_back(category);
-            }
-            // Create a User object and add it to the vector
-            users.emplace_back(id, username, userpassword, preferredCategories);
-        }
-        else {
-            cerr << "Invalid format in line: " << line << endl;
-        }
-    }
-    file.close();
-    return users;
-}
-
-vector<News> readNews() {
-    ifstream file("news.txt");
-    if (!file.is_open()) {
-        cerr << "Unable to open file: news.txt" << endl;
-        return news;
-    }
-
-    string line;
-    while (getline(file, line)) {
-        stringstream ss(line);
-        string token;
-        int ID;
-        string Title, Description, Category;
-        float AvgRate;
-        string DateAndTime; // Using string for date and time
-
-        // Parse ID, Title, Description, Category, AvgRate, and DateAndTime
-        if (!(getline(ss, token, ',') && (stringstream(token) >> ID) &&
-            getline(ss, Title, ',') &&
-            getline(ss, Description, ',') &&
-            getline(ss, Category, ',') &&
-            (ss >> AvgRate) &&
-            getline(ss, DateAndTime))) {
-            cerr << "Invalid format in line: " << line << endl;
-            continue;
-        }
-
-        // Create News object and add it to the list
-        News News(ID, Title, Description, Category, AvgRate, DateAndTime);
-        news.push_back(News);
-    }
-
-    file.close();
-    return news;
-}
-void WriteArticls() 
+   ifstream file("users.txt");
+if (!file.is_open())
 {
-        ofstream outFile("ArticlesOUTPUT.txt"); // Open file for writing
+    cerr << "Unable to open file: " << "users.txt" << endl;
+    return users; // Return empty vector if file cannot be opened
+}
+for (int i = 0; i < 4; i++) 
+{
+    int id, NumberOfCategories;
+    string username, userpassword;
+    string preferredCategory;
+    vector<string> preferredCategories;
 
-        if (outFile.is_open()) {
-          
+    file >> id;
+    file >> username;
+    file >> userpassword;
+    
 
-            // Writing to the file using stream insertion operators
-            outFile << "Articles: ";
-            for (News Article : news)
-            {
-                outFile << "Articls : " << Article.toString();
-                outFile << "===============================================" << endl;
-                outFile << "===============================================" << endl;
-                outFile<< "===============================================" << endl;
-            }
+   
+
+    User u(id, username, userpassword, preferredCategories);
+    users.push_back(u);
+    
+    }
+    
+    int i;
+    for (i = 0; i < 3; ++i)
+    {
+        file.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
+    i = i + 3;
 
 
-            
-            outFile.close(); // Close the file
-            cout << "Data has been written to the file." << endl;
+    return users;
         }
-        else {
-            cerr << "Unable to open file!" << endl;
+vector<News> readArticle(const string& filename) {
+    vector<News> articles;
+    ifstream file(filename);
+
+    if (!file.is_open()) {
+        cerr << "Error opening file: " << filename << endl;
+        return articles;
+    }
+
+   
+   
+    
+        for (int i = 0; i < 10; i++)
+        {
+        string title, description,category,DateAndTime;
+        int id, spamCount;
+        float averageRating;
+        map<string, float> ratings;
+        vector<pair<string, string>> comments;
+
+        file >> id;
+        file >> title;
+        replace(title.begin(), title.end(), '@', ' ');
+        file >> description;
+        replace(description.begin(), description.end(), '@', ' ');
+        file >> category;
+        int ratingCount;
+        file >> ratingCount;
+        for (int i = 0; i < ratingCount; i++) 
+        {
+            string username;
+            float rating;
+            file >> username >> rating;
+            ratings[username] = rating;
         }
+        // Read comments
+        int commentCount;
+        file >> commentCount;
+        file.ignore(); // Ignore newline character
+        for (int i = 0; i < commentCount; ++i)
+        {
+            string username, comment;
+            file >> username >> comment;
+            replace(comment.begin(), comment.end(), '@', ' ');
+           
+            comments.push_back(make_pair(username, comment));
+        }
+
+        // Read average rating
+        file >> averageRating;
+
+        // Read spam count
+        file >> spamCount;
+        //Read date and time
+        file >> DateAndTime;
+        replace(DateAndTime.begin(), DateAndTime.end(), '@', ' ');
+
+        // Create Article object and store in vector
+        News n (id, title, description, category, ratings, averageRating, comments, spamCount, DateAndTime);
+        articles.push_back(n);
 
         
+    
+
+    
+        }
+        int i;
+        for ( i = 1; i < 14; ++i)
+        {
+            file.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        }
+        i = i + 14;
+    return articles;
+}
+void WriteArticls()
+{
+    ofstream outFile("ArticlesOUTPUT.txt"); // Open file for writing
+
+    if (outFile.is_open()) {
+
+
+        // Writing to the file using stream insertion operators
+        outFile << "Articles: ";
+        for (News Article : news)
+        {
+            outFile << "Articls : " << Article.toString();
+            outFile << "===============================================" << endl;
+            outFile << "===============================================" << endl;
+            outFile << "===============================================" << endl;
+        }
+
+
+
+        outFile.close(); // Close the file
+        cout << "Data has been written to the file." << endl;
     }
-void WriteUsers() 
+    else {
+        cerr << "Unable to open file!" << endl;
+    }
+
+
+}
+void WriteUsers()
 {
 
     ofstream outFile("UsersOUTPUT.txt"); // Open file for writing
@@ -119,7 +162,7 @@ void WriteUsers()
         outFile << "Usere: ";
         for (User User : users)
         {
-            outFile << "Integer: " << User.toString();
+            outFile  << User.toString();
             outFile << "===============================================" << endl;
             outFile << "===============================================" << endl;
             outFile << "===============================================" << endl;
@@ -136,20 +179,28 @@ void WriteUsers()
 
 }
 
+string toLower(const string& str) {
+    string result;
+    result.reserve(str.size());
+    std::transform(str.begin(), str.end(), back_inserter(result),
+        [](unsigned char c) { return std::tolower(c); });
+    return result;
+}
 
-string toLower(const string& str);
-int main() {
+
+int main() 
+{
     cout << "\t\t\t\tWELCOME TO FCIS NEWS!\n";
     cout << "*********************************************************************************************************************\n";
-     users = readUsers();
-     news = readNews();
+    users = readUsers();
+    news = readArticle("articles.txt");
     vector<News> newsOfCategory, bookmarkedArticles, foundArticles;
     Admin loggedInAdmin;
     stack<News> latestNews;
     int ID;
     string Title, Description, Category, DateAndTime;
     float AvgRate;
-    int userChoice = 1, id, newID, adminChoice=1;
+    int userChoice = 1, id, newID, adminChoice = 1;
     string category, comment, word, newUsername, newPassword, newCategory;
     vector<string> newPreferredcategories;
     int loggedInUserChoice = 1, index, updateChoice;
@@ -227,7 +278,8 @@ int main() {
                         break;
                     }
                     case 2: {
-                        int rating, id;
+                        int  id;
+                        float rating;
                         cout << "Enter ID of the Article You Want to Rate\t";
                         cin >> id;
                         News articleToBeRated;
@@ -242,14 +294,15 @@ int main() {
                             }
                         }
 
-                        if (articleFound) {
+                        if (articleFound) 
+                        {
                             while (true) {
                                 cout << "Enter Rating of the Article (1 to 5)\t";
                                 cin >> rating;
                                 if (rating < 1 || rating > 5) continue;
                                 else break;
                             }
-                            news[index].addUserRating(loggedInUser.getID(), rating);
+                            news[index].addUserRating(loggedInUser.getUserName(), rating);
                         }
                         else {
                             cout << "No Article Matches the given ID\n";
@@ -264,12 +317,13 @@ int main() {
                         break;
                     }
                     case 4: {
-                        sort(news.begin(), news.end(), [](News& a, News& b) {
+                        sort(news.begin(), news.end(), [](News& a, News& b) 
+                            {
                             return a.getAvgRate() > b.getAvgRate();
                             });
 
                         for (auto& article : news) {
-                            if (article.getAvgRate() > 2)
+                            if (article.getAvgRate() > 4.00)
                                 article.displayArticle();
                             else continue;
                         }
@@ -331,10 +385,11 @@ int main() {
                         }
 
                         if (articleFound) {
+                            
                             cout << "Enter Your Comment:\t";
                             cin.ignore();
                             getline(cin, comment);
-                            news[index].addComment(comment);
+                            news[index].addComment(loggedInUser.getUserName(), comment);
                             news[index].displayComments();
                         }
                         else {
@@ -387,11 +442,11 @@ int main() {
                             string lowercaseDescription = toLower(article.getDescription());
                             string lowercaseWord = toLower(word);
                             if (lowercaseTitle.find(lowercaseWord) != string::npos) {
-                                
+
                                 found = true;
                             }
                             if (lowercaseDescription.find(lowercaseWord) != string::npos) {
-                                
+
                                 found = true;
                             }
                             if (found) {
@@ -477,11 +532,11 @@ int main() {
             cout << "Enter Password\t";
             cin >> pass;
 
-            if(user=="admin"&&pass=="admin")
+            if (user == "admin" && pass == "admin")
             {
                 loginSuccess = 1;
                 cout << "\t Admin Login Successfull!\n";
-                
+
             }
 
             if (loginSuccess) {
@@ -633,7 +688,7 @@ int main() {
                         }
                         break;
                     }
-                          
+
                     }
                 }
             }
@@ -642,11 +697,25 @@ int main() {
             }
             break;
         }
-        case 3: 
+        case 3:
         {
             //Register user
             cout << "Enter Username:\t";
             cin >> newUsername;
+            for (User user : users)
+            {
+                if (newUsername == user.getUserName())
+
+                {
+                    do
+                    {
+
+                        cout << "this username already used before ... please enter another user name \n";
+                        cin >> newUsername;
+
+                    } while (newUsername == user.getUserName());
+                }
+            }
             cout << "Enter Password:\t";
             cin >> newPassword;
             newID = users.size() + 1;
@@ -656,7 +725,7 @@ int main() {
             cout << "User Registered Successfully!\n";
             break;
         }
-        default: 
+        default:
         {
             cout << "\tThank You for Using FCIS News, See You Later!\n\n\n\n\n\n";
             break;
@@ -666,11 +735,4 @@ int main() {
     WriteArticls();
     WriteUsers();
     return 0;
-}
-string toLower(const string& str) {
-    string result;
-    result.reserve(str.size());
-    std::transform(str.begin(), str.end(), back_inserter(result),
-        [](unsigned char c) { return std::tolower(c); });
-    return result;
 }
