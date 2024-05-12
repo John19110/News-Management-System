@@ -1,15 +1,20 @@
 #pragma once
 #include "News.h"
-//4
-News::News(int ID, string Title, string Description, string Category, float AvgRate, string DateAndTime)
+
+News::News(int ID, string Title, string Description, string Category,map<string,float>ratings, float AvgRate, vector<pair<string, string>> comments,int spamCount,string DateAndTime)
 
 {
     this->ID = ID;
     this->Title = Title;
     this->Description = Description;
     this->Category = Category;
+    this->ratings = ratings;
     this->AvgRate = AvgRate;
+    this->comments = comments;
+    this->spamCount = spamCount;
     this->ArticleDateAndTime = DateAndTime;
+
+
 }
 
 News::News() {
@@ -27,40 +32,44 @@ void News::displayArticle()
     cout << " Date and Time: " << getArticleDateAndTime() << "\n";
     cout << " Spam Reports: " << getSpamCount() << "\n";
     cout << "=================================================================================\n";
+    displayRatings();
     displayComments();
 }
 void News::displayComments() {
-    if (Comments.size() == 0) {
+    if (comments.size() == 0) {
         cout << " No Comments Yet!\n";
     }
     else {
-        cout << " Comments (" << Comments.size() << "):\n\n";
-        for (string& str : Comments) {
-            cout << "* " << str << endl;
+        cout << "Comments for the  article \n'";
+        for (const auto& comment : comments) {
+            cout << "User: " << comment.first << endl;
+            cout << "Comment: " << comment.second << endl << endl;
         }
     }
     cout << "=================================================================================\n";
 }
 
-void News::addComment(string comment) {
-    Comments.push_front(comment);
+void News::addComment(string username, string comment)
+{
+    comments.push_back(make_pair(username, comment));
 }
 
-void News::addUserRating(int userId, int rating) {
-    Ratings.insert(make_pair(userId, rating));
+void News::addUserRating(string username, float rating) 
+{
+    ratings.insert(make_pair(username, rating));
     cout << "Rating Submitted Successfully!\n";
 }
 float News::calculateAverageRating() {
-    if (Ratings.empty()) {
+    if (ratings.empty()) {
         setAvgRate(AvgRate);
         return AvgRate;
     }
 
     else {
         int totalRating = 0;
-        int numRatings = Ratings.size();
+        int numRatings = ratings.size();
 
-        for (const auto& pair : Ratings) {
+        for (const auto& pair : ratings) {
             totalRating += pair.second; // Add up all ratings
         }
 
@@ -79,13 +88,14 @@ void News::addBookmarkID(int userID) {
 }
 
 void News::displayRatings() {
-    if (Ratings.empty()) {
+    if (ratings.empty()) {
         cout << "No Ratings Added to This Article Yet!";
     }
     else {
-        cout << "User ID\tRating\n";
-        for (auto it = Ratings.begin(); it != Ratings.end(); ++it) {
-            // Access the key using it->first and the value using it->second
+        cout << "User name\tRating\n";
+        for (auto it = ratings.begin(); it != ratings.end(); ++it) 
+        {
+            
             std::cout << it->first << "\t" << it->second << std::endl;
         }
     }
@@ -154,31 +164,24 @@ void News::setID(int ID) {
     this->ID = ID;
 }
 // Function to get all data as string
-string News:: toString() const {
+string News::toString() const {
     std::string result;
-    result += "Title: " + Title + "\n";
-    result += "Description: " + Description + "\n";
-    result += "Category: " + Category + "\n";
-    result += "Average Rating: " + std::to_string(AvgRate) + "\n";
     result += "ID: " + to_string(ID) + "\n";
+    result += "Article Date and Time: " + ArticleDateAndTime + "\n";
+    result += "Title: " + Title + "\n";
+    result += "Category: " + Category + "\n";
+    result += "Description: " + Description + "\n";
+    result += "Average Rating: " + std::to_string(AvgRate) + "\n";
     result += "Ratings:\n";
-    for (const auto& rating : Ratings) {
-        result += "  User ID: " + std::to_string(rating.first) + ", Rating: " + std::to_string(rating.second) + "\n";
+    for (const auto& rating : ratings) 
+    {
+        result += "  User naem: " + rating.first + ", Rating: " + to_string(rating.second) + "\n";
     }
     result += "Spam Count: " + std::to_string(spamCount) + "\n";
     result += "Comments:\n";
-    for (const auto& comment : Comments) {
-        result += "  " + comment + "\n";
+    for (const auto& comment : comments) 
+    {
+        result += "  User: " + comment.first + ", Comment: " + comment.second + "\n";
     }
-    result += "Bookmark IDs:\n";
-    for (const auto& id : BookmarkIDs) {
-        result += "  " + std::to_string(id) + "\n";
-    }
-    result += "Spam IDs:\n";
-    for (const auto& id : spamIDs) {
-        result += "  " + std::to_string(id) + "\n";
-    }
-    result += "Article Date and Time: " + ArticleDateAndTime + "\n";
     return result;
-
 };
