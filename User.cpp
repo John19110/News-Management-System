@@ -1,6 +1,6 @@
 #pragma once
 #include "User.h"
-//4
+
 User::User() {};
 User::User(int id, string username, string password, vector<string> prefferedCategories)
 {
@@ -53,42 +53,17 @@ bool User::CheckLogin(string username, string pass)
 
 	return LoginAttemptsFailed;
 }
-bool User::CheckAdmin(string name)
-{
-	ifstream file("login_admin.txt");
-	if (!file.is_open()) {
-		cerr << "Unable to locate the data" << endl;
-		return false;
-	}
-	string adminName;
-	while (file >> adminName) {
-		if (adminName == name) {
-			file.close();
-			return true;
-		}
-		else {
-			return false;
-		}
 
-	}
-}
 int User::getID() {
 	return this->id;
 }
-string User:: toString() const {
-	std::string result;
+string User::toString() const {
+string result;
 	result += "ID: " + to_string(id) + "\n";
 	result += "Username: " + username + "\n";
-	result += "Password: " + password + "\n";
-	result += "Attempt Count: " + std::to_string(attemptCount) + "\n";
-	result += "Max Attempts: " + std::to_string(maxAttempts) + "\n";
-	result += "Preferred Categories:\n";
-	for (const auto& category : preferredCategories) {
-		result += "  " + category + "\n";
-	}
+	result += "Password: " + password + "\n";	
 	return result;
 }
-
 
 
 
