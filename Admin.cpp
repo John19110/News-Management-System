@@ -2,7 +2,7 @@
 #include "Admin.h"
 #include "News.h"
 #include <cstring>
-//4
+
 
 Admin::Admin() {
 
