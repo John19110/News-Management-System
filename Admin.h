@@ -2,7 +2,6 @@
 #include <string.h>
 #include <fstream>
 #include <vector>
-//4
 
 
 using namespace std;
@@ -23,11 +22,6 @@ public:
 	//getters
 	string getUserName();
 	string getPassword();
-
-	
-
-	;
-
 
 
 };
